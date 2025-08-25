@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [windows-latest, ubuntu-latest]
 
     steps:
       - name: Checkout
@@ -22,14 +22,37 @@ jobs:
         uses: actions/setup-node@v3
         with:
           corepack: true
+      - name: "Install Build Prerequisites"
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libx11-dev libxtst-dev libasound2-dev
       - name: "Install Node Packages"
         run: "yarn install"
       - name: "Setup Vite Extensions"
+        if: runner.os == 'Windows'
         run: "yarn setup-vite"
       - name: "Recompile Native Deps for Electron"
-        run: "yarn workspace castmate-core run rebuild"  
+        if: runner.os == 'Windows'
+        run: "yarn workspace castmate-core run rebuild"
       - name: "Build"
+        if: runner.os == 'Windows'
         run: "yarn run buildpublish"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VITE_APP_MIXPANEL_PROJECT_TOKEN: ${{ secrets.MIXPANEL_PROJECT_TOKEN }}
+      - name: "Rebuild Node Modules"
+        if: runner.os == 'Linux'
+        run: "yarn ebuild"
+      - name: "Build AppImage"
+        if: runner.os == 'Linux'
+        run: "yarn workspace castmate run electron:build --linux AppImage"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_APP_MIXPANEL_PROJECT_TOKEN: ${{ secrets.MIXPANEL_PROJECT_TOKEN }}
+      - name: "Upload AppImage"
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v3
+        with:
+          name: CastMate-AppImage
+          path: release/*.AppImage
