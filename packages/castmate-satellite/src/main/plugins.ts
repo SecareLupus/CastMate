@@ -14,7 +14,13 @@ import twinklyPlugin from "castmate-plugin-twinkly-main"
 
 import soundPlugin from "castmate-plugin-sound-main"
 
-export async function loadPlugin(plugin: Plugin) {
+export async function loadPlugin(plugin?: Plugin) {
+	if (!plugin) return
+	const platforms = plugin.supportedPlatforms
+	if (platforms && !platforms.includes(process.platform as NodeJS.Platform)) {
+		console.log(`Skipping plugin ${plugin.id} for platform ${process.platform}`)
+		return
+	}
 	await PluginManager.getInstance().registerPlugin(plugin)
 }
 
