@@ -40,6 +40,11 @@ module.exports = {
 		],
 		artifactName: "${productName}_${version}.${ext}",
 	},
+	linux: {
+		target: ["AppImage"],
+		category: "Utility",
+		icon: "build/icon.png",
+	},
 	nsis: {
 		oneClick: false,
 		perMachine: false,
@@ -49,23 +54,26 @@ module.exports = {
 	portable: {
 		artifactName: "${productName}_${version}-portable.${ext}",
 	},
-	extraResources: [
-		{
-			from: "../../node_modules/@ffmpeg-installer/win32-x64",
-			to: "ffmpeg/bin",
-			filter: ["**/*.exe"],
-		},
-		{
-			from: "../../node_modules/@ffprobe-installer/win32-x64",
-			to: "ffmpeg/bin",
-			filter: ["**/*.exe"],
-		},
-		{
-			from: "../../node_modules/regedit/vbs",
-			to: "regedit/vbs",
-			filter: ["**/*"],
-		},
-	],
+	extraResources:
+		process.platform === "win32"
+			? [
+					{
+						from: "../../node_modules/@ffmpeg-installer/win32-x64",
+						to: "ffmpeg/bin",
+						filter: ["**/*.exe"],
+					},
+					{
+						from: "../../node_modules/@ffprobe-installer/win32-x64",
+						to: "ffmpeg/bin",
+						filter: ["**/*.exe"],
+					},
+					{
+						from: "../../node_modules/regedit/vbs",
+						to: "regedit/vbs",
+						filter: ["**/*"],
+					},
+			  ]
+			: [],
 	extraFiles: [
 		{
 			from: "../castmate-obs-overlay/dist/obs-overlay",
