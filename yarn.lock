@@ -897,11 +897,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ffmpeg-installer/linux-x64@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "@ffmpeg-installer/linux-x64@npm:4.1.0"
+  checksum: 10/4b755b0a972f00282bd5ccda9905e39af03cf3b8eb08450468d709502f01f10627132091cbdc8b5c3ed816685ca31234d55782a939e8ede839a5040ad31c23b4
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@ffmpeg-installer/win32-x64@npm:^4.1.0":
   version: 4.1.0
   resolution: "@ffmpeg-installer/win32-x64@npm:4.1.0"
   checksum: 10/151ae57e16bbef2ea56bf5f3c43b6719d0c534521343344d9464e03e4cca9a9485a4b75808ab7e203a29d2850e5b80b281687f0ddb894a4f9fdf8c5ffcca4951
   conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@ffprobe-installer/linux-x64@npm:^5.1.0":
+  version: 5.2.0
+  resolution: "@ffprobe-installer/linux-x64@npm:5.2.0"
+  checksum: 10/26f689de78ac2bbc8c2aa459882a4e4c6dc1229eb09b3e38af84a85df72124e416dd424a06e0ce09af8d869dd8a42cdd66423737e99027f2219fdd79f616a804
+  conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
@@ -3494,7 +3510,9 @@ __metadata:
   resolution: "castmate-monorepo@workspace:."
   dependencies:
     "@electron/rebuild": "npm:^3.7.1"
+    "@ffmpeg-installer/linux-x64": "npm:^4.1.0"
     "@ffmpeg-installer/win32-x64": "npm:^4.1.0"
+    "@ffprobe-installer/linux-x64": "npm:^5.1.0"
     "@ffprobe-installer/win32-x64": "npm:^5.1.0"
     "@types/node": "npm:^20.4.8"
     "@vitejs/plugin-vue": "npm:4.6.2"
