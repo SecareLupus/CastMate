@@ -284,16 +284,25 @@ export const MediaManager = Service(
 export function setupMedia() {
 	let ffprobePath = ""
 	let ffmpegPath = ""
+	const isWindows = process.platform === "win32"
+	const ffprobeFile = isWindows ? "ffprobe.exe" : "ffprobe"
+	const ffmpegFile = isWindows ? "ffmpeg.exe" : "ffmpeg"
+
 	if (app.isPackaged) {
 		const binPath = path.join(__dirname, "../../../", "ffmpeg/bin")
 
-		ffprobePath = path.resolve(binPath, "ffprobe.exe")
-		ffmpegPath = path.resolve(binPath, "ffmpeg.exe")
+		ffprobePath = path.resolve(binPath, ffprobeFile)
+		ffmpegPath = path.resolve(binPath, ffmpegFile)
 	} else {
 		const nodeModulesPath = path.join(__dirname, "../../../../", "node_modules")
 
-		ffprobePath = path.resolve(nodeModulesPath, "@ffprobe-installer/win32-x64/ffprobe.exe")
-		ffmpegPath = path.resolve(nodeModulesPath, "@ffmpeg-installer/win32-x64/ffmpeg.exe")
+		if (isWindows) {
+			ffprobePath = path.resolve(nodeModulesPath, "@ffprobe-installer/win32-x64/ffprobe.exe")
+			ffmpegPath = path.resolve(nodeModulesPath, "@ffmpeg-installer/win32-x64/ffmpeg.exe")
+		} else {
+			ffprobePath = path.resolve(nodeModulesPath, "@ffprobe-installer/linux-x64/ffprobe")
+			ffmpegPath = path.resolve(nodeModulesPath, "@ffmpeg-installer/linux-x64/ffmpeg")
+		}
 	}
 
 	logger.log("ffmpeg path", ffmpegPath)
