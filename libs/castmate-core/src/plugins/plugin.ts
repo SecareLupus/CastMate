@@ -50,6 +50,7 @@ interface PluginSpec {
 	icon?: string
 	color?: Color
 	version?: SemanticVersion
+	supportedPlatforms?: NodeJS.Platform[]
 }
 
 export function definePlugin(spec: PluginSpec, initter: () => void) {
@@ -490,6 +491,10 @@ export class Plugin {
 
 	get version() {
 		return this.spec.version ?? "0.0.0"
+	}
+
+	get supportedPlatforms() {
+		return this.spec.supportedPlatforms
 	}
 
 	constructor(private spec: PluginSpec, initer: () => void) {
